@@ -14,12 +14,10 @@ class Config extends RedisBase {
     };
 
     async set( key, val ) {
-        // return this._config.set( key, val );
         return await this._set( key, val );
     };
     
     async get( key ) {
-        // return this._config.get( key );
         return await this._get( key );
     };
 };
