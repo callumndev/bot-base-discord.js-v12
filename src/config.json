@@ -11,5 +11,5 @@
     "redis_client_host:development": "54.38.214.25",
     "redis_client_password": "PCb7H6L2",
     "redis_client_user": "lzz",
-    "redis_client_db": "0"
+    "redis_client_db": 0
 }
