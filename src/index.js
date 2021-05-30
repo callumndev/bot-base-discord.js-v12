@@ -1,10 +1,11 @@
 const setupGlobal = require( './helpers/Global.js' )
 setupGlobal();
 
-
 const Bot = require( './Bot.js' );
 try {
-    global.bot = new Bot().init();
+    ( async () => {
+        global.bot = await new Bot().init();
+    } )();
 } catch ( e ) {
-    console.log( '[Bot Error] ' + e.message );
+    console.log( '[Bot Error] ' + e.message, '\n', e.stack );
 };

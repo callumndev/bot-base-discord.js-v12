@@ -1,7 +1,6 @@
 class LibBase {
     constructor( options ) {
         this._options = options;
-        console.log( 'options', options )
     };
 
     log( str ) {

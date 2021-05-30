@@ -65,7 +65,6 @@ class StructureManager extends LibBase {
         } );
 
         if ( makeGlobal ) {
-            console.log( name + ' is global' )
             global[ name ] = new classFn();
         } else {
             discord.Structures.extend( name, classFn );

@@ -5,20 +5,22 @@ class Config extends RedisBase {
         this._config = new Map();
     };
 
-    merge( table ) {
+    async merge( table ) {
         for ( const [key, value] of Object.entries( table ) ) {
-            this.set( key, value );
+            await this.set( key, value );
         };
 
         return this;
     };
 
-    set( key, val ) {
-        return this._config.set( key, val );
+    async set( key, val ) {
+        // return this._config.set( key, val );
+        return await this._set( key, val );
     };
     
-    get( key ) {
-        return this._config.get( key );
+    async get( key ) {
+        // return this._config.get( key );
+        return await this._get( key );
     };
 };
 

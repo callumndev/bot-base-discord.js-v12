@@ -9,18 +9,22 @@ module.exports = class extends Client {
         this.structures = lib( 'StructureManager' ).init();
     };
 
-    init() {
-        Config.merge( require( './config.json' ) );
+    async init() {
+        await Config.merge( require( './config.json' ) );
 
         this.options.presence = {
-            status: Config.get( 'presence_status' ),
+            status: await Config.get( 'presence_status' ),
             activity: {
-                name: Config.get( 'presence_activity_name' ),
-                type: Config.get( 'presence_activity_type' )
+                name: await Config.get( 'presence_activity_name' ),
+                type: await Config.get( 'presence_activity_type' )
             }
         };
         
-        this.login( Config.get( 'token' ) );
+        try {
+            this.login( await Config.get( 'token' ) );
+        } catch ( e ) {
+            console.log( '[Bot Error :: Init :: Login] ' + e.message, '\n', e.stack );
+        };
 
         return this;
     }

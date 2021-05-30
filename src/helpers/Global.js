@@ -4,7 +4,8 @@ const helper = h => {
 };
 
 const depNames = {
-    'discord.js': 'discord'
+    'discord.js': 'discord',
+    'ioredis': 'redis'
 };
 
 module.exports = () => {
@@ -20,6 +21,14 @@ module.exports = () => {
             global[ depNames[ dep.toLowerCase() ] ?? dep.toLowerCase() ] = require( dep );
         };
 
+        const redisConfig = require( '../config.json' );
+        global.redisClient = new redis( {
+            host: redisConfig[ 'redis_client_host:' + getEnv ],
+            password: redisConfig.redis_client_password,
+            user: redisConfig.redis_client_user,
+            db: redisConfig.redis_client_db
+        } );
+
         global.LibBase = lib( 'LibBase' );
         global.RedisBase = lib( 'RedisBase' );
         global.structures = lib( 'StructureManager' );
@@ -29,6 +38,6 @@ module.exports = () => {
         helper( 'isClass' );
 
     } catch ( e ) {
-        console.log( 'Global Helper:', e.message );
+        console.log( '[Global Helper :: Error]', e.message, '\n', e.stack );
     };
 };
