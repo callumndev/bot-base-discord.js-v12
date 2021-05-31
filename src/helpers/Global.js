@@ -1,6 +1,6 @@
-const lib = l => require( '../libraries/' + l );
+const lib = l => require( '../Libraries/' + l );
 const helper = h => {
-    global[ h ] = require( '../helpers/' + h );
+    global[ h ] = require( '../Helpers/' + h );
 };
 
 const depNames = {

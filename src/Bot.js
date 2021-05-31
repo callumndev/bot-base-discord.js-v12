@@ -1,5 +1,5 @@
 const { Client } = require( 'discord.js' );
-const lib = l => { l = require( './libraries/' + l ); return new l(); };
+const lib = l => { l = require( './Libraries/' + l ); return new l(); };
 
 module.exports = class extends Client {
     constructor( options ) {

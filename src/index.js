@@ -1,4 +1,4 @@
-const setupGlobal = require( './helpers/Global.js' )
+const setupGlobal = require( './Helpers/Global.js' )
 setupGlobal();
 
 const Bot = require( './Bot.js' );
