@@ -14,6 +14,8 @@ module.exports = () => {
         global.isProd = getEnv == 'production';
         global.isDev = getEnv == 'development';
 
+        helper( 'logger' );
+
         const { dependencies } = require( '../../package.json' );
         if ( dependencies.length <= 0 ) return;
         

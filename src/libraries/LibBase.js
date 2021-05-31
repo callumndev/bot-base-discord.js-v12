@@ -4,11 +4,11 @@ class LibBase {
     };
 
     log( str ) {
-        console.log( '[' + this._options.name + ']', str )
+        console.log( chalk.blue( '[' + this._options.name + ']' ), chalk.bold( str ) );
     };
     
     error( str ) {
-        console.log( '[' + this._options.name + ' :: Error]', str )
+        console.log( chalk.red( '[' + this._options.name + ' :: Error]' ), chalk.bold( str ) );
     };
 };
 
