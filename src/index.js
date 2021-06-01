@@ -7,5 +7,5 @@ try {
         global.bot = await new Bot().init();
     } )();
 } catch ( e ) {
-    console.log( '[Bot Error] ' + e.message, '\n', e.stack );
+    logger.error( '[Bot Error] ' + e.message, '\n', e.stack );
 };

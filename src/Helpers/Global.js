@@ -17,8 +17,9 @@ module.exports = () => {
         global.isProd = getEnv == 'production';
         global.isDev = getEnv == 'development';
 
+        
         global.Roles = {};
-
+        
         util( 'logger' );
         util( 'msg' );
 
@@ -51,6 +52,6 @@ module.exports = () => {
         
 
     } catch ( e ) {
-        console.log( '[Global Helper :: Error]', e.message, '\n', e.stack );
+        logger.error( '[Global Helper :: Error]', e.message, '\n', e.stack );
     };
 };

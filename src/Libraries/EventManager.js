@@ -35,7 +35,6 @@ class EventManager extends LibBase {
     
     handle() {
         this._events.forEach( ( e ) => {
-            console.log( e )
             this.client.on( e.eventName, ( ...args ) => {
                 if ( e.enabled == false ) return;
 
