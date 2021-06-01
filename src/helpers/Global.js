@@ -1,7 +1,10 @@
-const lib = l => require( '../Libraries/' + l );
+const util = u => {
+    global[ u ] = require( '../Utils/' + u );
+};
 const helper = h => {
     global[ h ] = require( '../Helpers/' + h );
 };
+const lib = l => require( '../Libraries/' + l );
 
 const depNames = {
     'discord.js': 'discord',
@@ -14,7 +17,11 @@ module.exports = () => {
         global.isProd = getEnv == 'production';
         global.isDev = getEnv == 'development';
 
-        helper( 'logger' );
+        global.Roles = {};
+
+        util( 'logger' );
+        util( 'msg' );
+
         helper( 'checkType' );
         helper( 'className' );
         helper( 'isClass' );

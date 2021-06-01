@@ -24,7 +24,7 @@ module.exports = class extends Client {
         try {
             this.login( await Config.get( 'token' ) );
         } catch ( e ) {
-            console.log( '[Bot Error :: Init :: Login] ' + e.message, '\n', e.stack );
+            logger.error( '[Client :: Init :: Login] ' + e.message, '\n', e.stack );
         };
 
         return this;
