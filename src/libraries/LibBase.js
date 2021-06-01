@@ -3,12 +3,12 @@ class LibBase {
         this._options = options;
     };
 
-    log( str ) {
-        console.log( chalk.blue( '[' + this._options.name + ']' ), chalk.bold( str ) );
+    log( ...str ) {
+        console.log( chalk.blue( '[' + this._options.name + ']' ), chalk.bold( ...str ) );
     };
     
-    error( str ) {
-        console.log( chalk.red( '[' + this._options.name + ' :: Error]' ), chalk.bold( str ) );
+    error( ...str ) {
+        console.log( chalk.red( '[' + this._options.name + ' :: Error]' ), chalk.bold( ...str ) );
     };
 };
 

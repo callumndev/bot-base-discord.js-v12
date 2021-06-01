@@ -15,6 +15,11 @@ module.exports = () => {
         global.isDev = getEnv == 'development';
 
         helper( 'logger' );
+        helper( 'checkType' );
+        helper( 'className' );
+        helper( 'isClass' );
+        helper( 'classFuncs' );
+        helper( 'lowerFirst' );
 
         const { dependencies } = require( '../../package.json' );
         if ( dependencies.length <= 0 ) return;
@@ -34,10 +39,9 @@ module.exports = () => {
         global.LibBase = lib( 'LibBase' );
         global.RedisBase = lib( 'RedisBase' );
         global.structures = lib( 'StructureManager' );
+        global.EventManager = lib( 'EventManager' );
+        global.EventBase = lib( 'EventBase' );
         
-        helper( 'checkType' );
-        helper( 'className' );
-        helper( 'isClass' );
 
     } catch ( e ) {
         console.log( '[Global Helper :: Error]', e.message, '\n', e.stack );

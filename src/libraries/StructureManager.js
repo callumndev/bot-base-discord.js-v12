@@ -44,7 +44,7 @@ class StructureManager extends LibBase {
 
     status( name ) {
         if ( !checkType( name, 'string' ) )
-            console.error( 'Error: typeof structureName != string' );
+            this.error( 'Error: typeof structureName != string' );
         
         if ( !this.validate( name ) )
             throw new Error( `${ name } is not a registered structure` );
@@ -54,7 +54,7 @@ class StructureManager extends LibBase {
 
     register( name, classFn, makeGlobal = false ) {
         if ( !checkType( name, 'string' ) || !isClass( classFn ) || !checkType( makeGlobal, 'boolean' ) ) {
-            return console.error( 'StructureManager.register(): One parameter is not the correct type' );
+            return this.error( 'StructureManager.register(): One parameter is not the correct type' );
         };
 
         this._structures.set( name, {
@@ -75,7 +75,7 @@ class StructureManager extends LibBase {
 
     disable( name, override = null ) {
         if ( !checkType( name, 'string' ) || !this.validate( name ) || !this.status( name ) ) {
-            return console.error( 'StructureManager.disable(): Either the name typeof param != string or that is not a registered structure or the structure is already disabled' );
+            return this.error( 'StructureManager.disable(): Either the name typeof param != string or that is not a registered structure or the structure is already disabled' );
         };
 
         let structure = this._structures.get( name );
@@ -92,7 +92,7 @@ class StructureManager extends LibBase {
 
     enable( name ) {
         if ( !checkType( name, 'string' ) || !this.validate( name ) || this.status( name ) ) {
-            return console.error( 'StructureManager.enable(): Either the name typeof param != string or that is not a registered structure or the structure is already enabled' );
+            return this.error( 'StructureManager.enable(): Either the name typeof param != string or that is not a registered structure or the structure is already enabled' );
         };
 
         let structure = this._structures.get( name );

@@ -7,6 +7,7 @@ module.exports = class extends Client {
         this._options = options;
 
         this.structures = lib( 'StructureManager' ).init();
+        this.events = lib( 'EventManager' ).init( this );
     };
 
     async init() {

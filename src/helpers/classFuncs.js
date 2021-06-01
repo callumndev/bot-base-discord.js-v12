@@ -1,0 +1,1 @@
+module.exports = ( toCheck ) => Object.getOwnPropertyNames(toCheck.prototype).filter( e => e != 'constructor' );
