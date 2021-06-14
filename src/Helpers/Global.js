@@ -5,6 +5,7 @@ const helper = h => {
     global[ h ] = require( '../Helpers/' + h );
 };
 const lib = l => require( '../Libraries/' + l );
+const data = d => require( '../Data/' + d );
 
 const depNames = {
     'discord.js': 'discord',
@@ -13,22 +14,16 @@ const depNames = {
 
 module.exports = () => {
     try {
-        global.getEnv = process.platform == 'linux' ? 'production' : 'development';
-        global.isProd = getEnv == 'production';
-        global.isDev = getEnv == 'development';
-
+        // Vars
+        global.procEnv = process.platform == 'linux' ? 'production' : 'development';
+        global.isProd = procEnv == 'production';
+        global.isDev = procEnv == 'development';
         
         global.Roles = {};
-        
-        util( 'logger' );
-        util( 'msg' );
+        global.Data = data;
+        global._Config = require( '../config.json' );
 
-        helper( 'checkType' );
-        helper( 'className' );
-        helper( 'isClass' );
-        helper( 'classFuncs' );
-        helper( 'lowerFirst' );
-
+        // Dependencies
         const { dependencies } = require( '../../package.json' );
         if ( dependencies.length <= 0 ) return;
         
@@ -36,22 +31,32 @@ module.exports = () => {
             global[ depNames[ dep.toLowerCase() ] ?? dep.toLowerCase() ] = require( dep );
         };
 
-        const redisConfig = require( '../config.json' );
+        // Utils
+        util( 'logger' );
+        util( 'msg' );
+        util( 'classes' );
+        util( 'data' );
+
+        // Helpers
+        helper( 'checkType' );
+        helper( 'lowerFirst' );
+
+        // Redis
         global.redisClient = new redis( {
-            host: redisConfig[ 'redis_client_host:' + getEnv ],
-            password: redisConfig.redis_client_password,
-            user: redisConfig.redis_client_user,
-            db: redisConfig.redis_client_db
+            host: _Config.redis_client_host,
+            password: _Config.redis_client_password,
+            user: _Config.redis_client_user,
+            db: _Config.redis_client_db
         } );
 
+        // Libraries
         global.LibBase = lib( 'LibBase' );
         global.RedisBase = lib( 'RedisBase' );
-        global.structures = lib( 'StructureManager' );
+        global.structures = new ( lib( 'StructureManager' ) )().init(); // Needs to be initialized before client
         global.EventManager = lib( 'EventManager' );
         global.EventBase = lib( 'EventBase' );
-        
-
     } catch ( e ) {
-        logger.error( '[Global Helper :: Error]', e.message, '\n', e.stack );
+        console.error( '[Global Helper :: Error]', e.message, '\n', e.stack );
+        process.exit( 1 );
     };
 };

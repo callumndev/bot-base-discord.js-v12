@@ -12,12 +12,13 @@ class RedisBase extends LibBase {
     };
 
     async _set( key, val ) {
-        return await redisClient.hset( this._options.hash, key, val );
+        return await redisClient?.hset( this._options.hash, key, val );
     };
     
     async _get( key ) {
-        return await redisClient.hget( this._options.hash, key );
+        return await redisClient?.hget( this._options.hash, key );
     };
 };
+
 
 module.exports = RedisBase;

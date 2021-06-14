@@ -4,7 +4,7 @@ class PingCommand extends CommandBase {
     };
 
     execute( message, args ) {
-        message.channel.send()
+        message.channel.send( 'Pong' )
     };
 };
 

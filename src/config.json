@@ -1,15 +1,1 @@
-{
-    "client_id": "847628974896578621",
-    "client_secret": "RbcjeA-mO4TiuTTiqvHrANQ1fHEyMniF",
-    "token": "ODQ3NjI4OTc0ODk2NTc4NjIx.YLA1_w.BLdv_NlrSeDaua3k7VPaCj3unFw",
-
-    "presence_status": "dnd",
-    "presence_activity_name": "epic gamers play",
-    "presence_activity_type": "WATCHING",
-
-    "redis_client_host:production": "127.0.0.1",
-    "redis_client_host:development": "54.38.214.25",
-    "redis_client_password": "PCb7H6L2",
-    "redis_client_user": "lzz",
-    "redis_client_db": 0
-}
+{"client_id":"847628974896578621","client_secret":"RbcjeA-mO4TiuTTiqvHrANQ1fHEyMniF","client_token":"ODQ3NjI4OTc0ODk2NTc4NjIx.YLA1_w.BLdv_NlrSeDaua3k7VPaCj3unFw","client_prefix":"!","presence_status":"dnd","presence_afk":false,"presence_activity_name":"for !help","presence_activity_type":"WATCHING","redis_client_host":"54.38.214.25","redis_client_password":"PCb7H6L2","redis_client_user":"lzz","redis_client_db":0,"logs_suppress_verbose":false}

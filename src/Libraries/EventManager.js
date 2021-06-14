@@ -1,10 +1,3 @@
-// {
-//     name: 'Config',
-//     classFn: 'ConfigClass',
-//     enabled: true,
-//     makeGlobal: true
-// })
-
 class EventManager extends LibBase {
     constructor() {
         super( { name: 'Event Manager' } );
@@ -22,9 +15,9 @@ class EventManager extends LibBase {
             const event = require( '../Events/' + eventName );
             
             try {
-                this.register( className( event ), event );
+                this.register( event );
             } catch ( e ) {
-                this.error( `[init] Failed to register event ${ eventName } because ${ e.message }` );
+                this.error( `[init] Failed to register event ${ eventName } because ${ e.message }`, '\n', e.stack );
             };
         };
         
@@ -35,10 +28,12 @@ class EventManager extends LibBase {
     
     handle() {
         this._events.forEach( ( e ) => {
+            if ( !data.isEvent( e.eventName ) ) return this.verbose( `Ignoring invalid event ${ e.eventName }` );
+            
             this.client.on( e.eventName, ( ...args ) => {
                 if ( e.enabled == false ) return;
-
-                e.classFn[ e.formattedName ].call( e.classFn, ...args, this.client );
+                
+                e.classFn[ e.formattedName ].bind( e.classFn, ...args, this.client )();
             } );
         } );
     };
@@ -57,12 +52,13 @@ class EventManager extends LibBase {
         return this._events.get( name )?.enabled;
     };
 
-    register( name, classFn ) {
-        if ( !checkType( name, 'string' ) || !isClass( classFn ) ) {
+    register( classFn ) {
+        if ( !classes.isClass( classFn ) ) {
             return this.error( 'EventManager.register(): One parameter is not the correct type' );
         };
 
-        classFuncs( classFn ).forEach( fn => {
+        classes.funcs( classFn ).forEach( fn => {
+            let name = `${ classes.name( classFn ) }.${ fn }`;
             let eventName = lowerFirst( fn.replace( 'on', '' ) );
 
             this._events.set( name, {
@@ -73,7 +69,7 @@ class EventManager extends LibBase {
                 enabled: true
             } );
 
-            this.log( `[register] Registered event ${ className( classFn ) }.${ fn }` );
+            this.log( `[register] Registered event ${ name }` );
         } );
     };
 
@@ -99,5 +95,6 @@ class EventManager extends LibBase {
         this._events.set( name, event );
     };
 };
+
 
 module.exports = EventManager;

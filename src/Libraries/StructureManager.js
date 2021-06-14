@@ -1,10 +1,3 @@
-// {
-//     name: 'Config',
-//     classFn: 'ConfigClass',
-//     enabled: true,
-//     makeGlobal: true
-// })
-
 class StructureManager extends LibBase {
     constructor( ) {
         super( { name: 'Structure Manager' } );
@@ -18,11 +11,11 @@ class StructureManager extends LibBase {
         for ( let structureName of structures ) {
             const structure = require( '../Structures/' + structureName );
 
-            if ( isClass( structure ) ) {
+            if ( classes.isClass( structure ) ) {
                 try {
-                    this.register( className( structure ), structure, !!structure.makeGlobal );
+                    this.register( classes.name( structure ), structure, !!structure.makeGlobal );
                 } catch ( e ) {
-                    this.error( `[init] Failed to register structure ${ structureName } because ${ e.message }` );
+                    this.error( `[init] Failed to register structure ${ structureName } because ${ e.message }\n`, e.stack );
                 };
             } else if ( checkType( structure, 'function' ) ) {
                 try {
@@ -30,7 +23,7 @@ class StructureManager extends LibBase {
                     
                     this.log( `[init] Called structure ${ structureName }` );
                 } catch ( e ) {
-                    this.error( `[init] Failed to call structure ${ structureName } because ${ e.message }` );
+                    this.error( `[init] Failed to call structure ${ structureName } because ${ e.message }`, '\n', e.stack );
                 };
             };
         };
@@ -39,7 +32,7 @@ class StructureManager extends LibBase {
     };
 
     validate( name ) {
-        return this._structures.has( name );
+        return this._structures?.has( name );
     };
 
     status( name ) {
@@ -49,15 +42,15 @@ class StructureManager extends LibBase {
         if ( !this.validate( name ) )
             throw new Error( `${ name } is not a registered structure` );
 
-        return this._structures.get( name )?.enabled;
+        return this._structures?.get( name )?.enabled;
     };
 
     register( name, classFn, makeGlobal = false ) {
-        if ( !checkType( name, 'string' ) || !isClass( classFn ) || !checkType( makeGlobal, 'boolean' ) ) {
+        if ( !checkType( name, 'string' ) || !classes.isClass( classFn ) || !checkType( makeGlobal, 'boolean' ) ) {
             return this.error( 'StructureManager.register(): One parameter is not the correct type' );
         };
 
-        this._structures.set( name, {
+        this._structures?.set( name, {
             name,
             classFn,
             enabled: true,
@@ -67,45 +60,14 @@ class StructureManager extends LibBase {
         if ( makeGlobal ) {
             global[ name ] = new classFn();
         } else {
-            discord.Structures.extend( name, classFn );
+            if ( !data.isStructure( name ) ) return this.verbose( `Ignoring invalid structure ${ name }` );
+
+            discord?.Structures?.extend( name, () => classFn );
         };
 
-        this.log( `[register] Registered structure ${ className( classFn ) }` );
-    };
-
-    disable( name, override = null ) {
-        if ( !checkType( name, 'string' ) || !this.validate( name ) || !this.status( name ) ) {
-            return this.error( 'StructureManager.disable(): Either the name typeof param != string or that is not a registered structure or the structure is already disabled' );
-        };
-
-        let structure = this._structures.get( name );
-        structure.enabled = false;
-
-        if ( structure.makeGlobal ) {
-            delete global[ name ];
-        } else {
-            discord.Structures.extend( name, discord[ override != null ? override : name ] );
-        };
-
-        this._structures.set( name, structure );
-    };
-
-    enable( name ) {
-        if ( !checkType( name, 'string' ) || !this.validate( name ) || this.status( name ) ) {
-            return this.error( 'StructureManager.enable(): Either the name typeof param != string or that is not a registered structure or the structure is already enabled' );
-        };
-
-        let structure = this._structures.get( name );
-        structure.enabled = true;
-
-        if ( structure.makeGlobal ) {
-            global[ name ] = structure.classFn;
-        } else {
-            discord.Structures.extend( name, structure.classFn );
-        };
-
-        this._structures.set( name, structure );
+        this.log( `[register] Registered structure ${ classes.name( classFn ) }` );
     };
 };
+
 
 module.exports = StructureManager;

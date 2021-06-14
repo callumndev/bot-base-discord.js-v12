@@ -1,0 +1,18 @@
+[
+    "GuildEmoji",
+    "DMChannel",
+    "TextChannel",
+    "VoiceChannel",
+    "CategoryChannel",
+    "NewsChannel",
+    "StoreChannel",
+    "GuildMember",
+    "Guild",
+    "Message",
+    "MessageReaction",
+    "Presence",
+    "ClientPresence",
+    "VoiceState",
+    "Role",
+    "User"
+]

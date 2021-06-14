@@ -1,7 +1,12 @@
-const setupGlobal = require( './Helpers/Global.js' )
+const buildConfig = require( './Utils/buildConfig.js' ),
+    __config = require( './config.js' ),
+    setupGlobal = require( './Helpers/Global.js' ),
+    Bot = require( './Bot.js' );
+
+buildConfig( __config );
 setupGlobal();
 
-const Bot = require( './Bot.js' );
+
 try {
     ( async () => {
         global.bot = await new Bot().init();

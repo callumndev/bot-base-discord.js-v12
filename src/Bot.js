@@ -6,27 +6,18 @@ module.exports = class extends Client {
         super( options );
         this._options = options;
 
-        this.structures = lib( 'StructureManager' ).init();
         this.events = lib( 'EventManager' ).init( this );
     };
 
     async init() {
         await Config.merge( require( './config.json' ) );
-
-        this.options.presence = {
-            status: await Config.get( 'presence_status' ),
-            activity: {
-                name: await Config.get( 'presence_activity_name' ),
-                type: await Config.get( 'presence_activity_type' )
-            }
-        };
         
         try {
             this.login( await Config.get( 'token' ) );
         } catch ( e ) {
             logger.error( '[Client :: Init :: Login] ' + e.message, '\n', e.stack );
         };
-
+        
         return this;
-    }
+    };
 };
