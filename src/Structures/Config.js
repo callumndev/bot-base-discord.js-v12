@@ -1,6 +1,6 @@
 class Config extends RedisBase {
     constructor() {
-        super();
+        super( { name: 'Redis Base - Config' } );
 
         this._config = new Map();
     };

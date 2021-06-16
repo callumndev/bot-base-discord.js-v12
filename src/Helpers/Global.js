@@ -1,17 +1,3 @@
-const util = u => {
-    global[ u ] = require( '../Utils/' + u );
-};
-const helper = h => {
-    global[ h ] = require( '../Helpers/' + h );
-};
-const lib = l => require( '../Libraries/' + l );
-const data = d => require( '../Data/' + d );
-
-const depNames = {
-    'discord.js': 'discord',
-    'ioredis': 'redis'
-};
-
 module.exports = () => {
     try {
         // Vars
@@ -23,13 +9,20 @@ module.exports = () => {
         global.Data = data;
         global._Config = require( '../config.json' );
 
+
         // Dependencies
         const { dependencies } = require( '../../package.json' );
         if ( dependencies.length <= 0 ) return;
-        
-        for ( let dep in dependencies ) {
-            global[ depNames[ dep.toLowerCase() ] ?? dep.toLowerCase() ] = require( dep );
+
+        for ( let dependencie in dependencies ) {
+            let overrides = {
+                'discord.js': 'discord',
+                'ioredis': 'redis'
+            };
+
+            dep( dependencie.toLowerCase(), overrides[ dependencie ] );
         };
+
 
         // Utils
         util( 'logger' );
@@ -37,17 +30,24 @@ module.exports = () => {
         util( 'classes' );
         util( 'data' );
 
+
         // Helpers
         helper( 'checkType' );
         helper( 'lowerFirst' );
+        helper( 'upperFirst' );
+        helper( 'flatten' );
+        helper( 'isJSONString' );
+        helper( 'date' );
 
+        
         // Redis
         global.redisClient = new redis( {
-            host: _Config.redis_client_host,
-            password: _Config.redis_client_password,
-            user: _Config.redis_client_user,
-            db: _Config.redis_client_db
+            host: _Config[ 'redis.client.host' ],
+            password: _Config[ 'redis.client.password' ],
+            user: _Config[ 'redis.client.user' ],
+            db: _Config[ 'redis.client.db' ]
         } );
+
 
         // Libraries
         global.LibBase = lib( 'LibBase' );

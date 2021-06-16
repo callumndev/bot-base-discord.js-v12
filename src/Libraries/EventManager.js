@@ -58,8 +58,8 @@ class EventManager extends LibBase {
         };
 
         classes.funcs( classFn ).forEach( fn => {
-            let name = `${ classes.name( classFn ) }.${ fn }`;
-            let eventName = lowerFirst( fn.replace( 'on', '' ) );
+            let name = `${ classes.name( classFn ) }.${ fn }`,
+                eventName = lowerFirst( fn.replace( 'on', '' ) );
 
             this._events.set( name, {
                 name,
