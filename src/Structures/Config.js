@@ -1,12 +1,10 @@
 class Config extends RedisBase {
     constructor() {
         super( { name: 'Redis Base - Config' } );
-
-        this._config = new Map();
     };
 
     async merge( table ) {
-        for ( const [key, value] of Object.entries( table ) ) {
+        for ( const [ key, value ] of Object.entries( table ) ) {
             await this.set( key, value );
         };
 

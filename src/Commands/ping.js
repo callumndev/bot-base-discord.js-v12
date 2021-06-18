@@ -8,4 +8,5 @@ class PingCommand extends CommandBase {
     };
 };
 
+
 module.exports = PingCommand;

@@ -5,6 +5,8 @@ let includers = [
     { name: 'dep', makeGlobal: true },
     { name: 'lib', folder: 'Libraries' },
     { name: 'data', folder: 'Data' },
+    { name: 'model', folder: 'Models' },
+    { name: 'structure', folder: 'Structures' },
 ];
 
 includers.forEach( includer => {
@@ -24,7 +26,7 @@ includers.forEach( includer => {
 dep( 'fs' );
 dep( 'path' );
 
-util( 'buildConfig' )
+util( 'buildConfig' );
 
 helper( 'flatten' );
 helper( 'Global' );

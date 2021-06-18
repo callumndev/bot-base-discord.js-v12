@@ -25,14 +25,14 @@ function suppress() {
 };
 
 
-const chan = c => Config.get( [ 'discord.guild', `discord.channels.${ c }`, 'discord.disabledEvents' ] ).then( ( [ guild, chan, l ] ) => {
+const chan = c => Config.get( [ 'discord.guild', `discord.channels.${ c }`, 'discord.disabledEvents' ] ).then( ( [ guild, chan ] ) => {
     if ( !guild ) throw this.verbose( `Ignoring invalid discord.guild in config.` );
     if ( !chan ) throw this.verbose( `Ignoring invalid channel ${ c } in config` );
 
     guild = bot.guilds.cache.get( guild );
     if ( !guild ) throw this.verbose( `Ignoring invalid discord.guild. Not found in client cache.` );
     
-    bot.channels.fetch( chan ).then( c => {
+    guild.channels.fetch( chan ).then( c => {
         if ( !c ) throw this.verbose( `Ignoring invalid channel ${ c }. Not found in client cache.` );
     } );
 
@@ -79,7 +79,6 @@ module.exports = {
                     args = [];
 
                 str.forEach( arg => {
-                    console.log( typeof arg )
                     if ( arg instanceof Error ) {
                         let { name, message, stack } = arg;
 
@@ -107,6 +106,7 @@ module.exports = {
             } )
             .catch( e => e );
         },
+        
         verbose( ...str ) {
             chan( 'verbose' ).then( c => {
                 let time = date.formatted,
@@ -122,9 +122,6 @@ module.exports = {
 process.on( 'uncaughtException', ( err ) => {
     let log = module.exports;
 
-    log.error( err );
+    log.error( err.stack );
     log.discord.error( err );
-    
-    // log.discord.error( 'EventManager.disable(): Either the name typeof param != string or that is not a registered event or the event is already disabled' );
-    // log.discord.error( '[Global Helper :: Error]', 'message', '\n', 'stack' );
 } );

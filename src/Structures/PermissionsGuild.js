@@ -1,17 +1,14 @@
 class Guild extends discord.Guild {
     constructor( ...args ) {
         super( ...args );
+    };
+    
+    rolesWithLevel( level ) {
+        return this.roles.cache.filter( r => r.permissionLevel == level );
+    };
 
-        this.permissions = 'permissions2';
-    };
-    
-    rolePower( role ) {
-        let power = 0;
-        return power;
-    };
-    
-    rolesWithPower( power ) {
-        return power;
+    get settings() {
+        return new ( structure( 'GuildSettings' ) )( this.id );
     };
 };
 

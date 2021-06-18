@@ -17,7 +17,7 @@ module.exports = config => {
     
     
     // Export to JSON
-    fs.writeFileSync (
+    fs.writeFileSync(
         path.join( __dirname, '..', 'config.json' ),
         
         JSON.stringify( c )

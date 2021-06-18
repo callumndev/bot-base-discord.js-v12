@@ -20,8 +20,9 @@ class TextChannel extends discord.TextChannel {
             color: colour,
             ...extra
         };
+
         return this.send( { embed } );
-    }
+    };
 };
 
 
