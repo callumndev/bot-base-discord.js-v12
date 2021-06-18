@@ -65,7 +65,7 @@ class StructureManager extends LibBase {
             discord?.Structures?.extend( name, () => classFn );
         };
 
-        this.log( `[register] Registered structure ${ classes.name( classFn ) }` );
+        this.log( `[register] Registered ${ !makeGlobal ? 'extender ' : '' }structure ${ classes.name( classFn ) }` );
     };
 };
 

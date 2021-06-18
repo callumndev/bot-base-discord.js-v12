@@ -3,8 +3,19 @@ class Role extends discord.Role {
         super( ...args );
     };
     
-    get power() {
-        return 0;
+    get permissionLevel() {
+        let level = 'user';
+        let rolePermissions = this.permissions.toArray();
+
+        for ( const [ key, value ] of Object.entries( Data( 'permissions' ) ) ) {
+            let incommon = value.filter( x => rolePermissions.includes( x ) );
+
+            if ( incommon.length >= 1 ) {
+                level = key;
+            };
+        };
+
+        return level;
     };
 };
 

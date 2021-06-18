@@ -3,7 +3,7 @@ class BotReady extends EventBase {
         super( { name: 'Bot Ready' } );
     };
 
-    onReady( bot ) {
+    async onReady( bot ) {
         let g = bot.guilds.cache.size,
             u = bot.users.cache.size,
             onlineLog = `${ bot.user.username } is online with ${ g } guild${ g == 1 ? '': 's' } & ${ u } user${ u == 1 ? '': 's' }`;
@@ -11,7 +11,7 @@ class BotReady extends EventBase {
         this.log( onlineLog );
         logger.discord.log( `${ onlineLog }\n\nVersion: ${ procEnv }` );
 
-        ( async () => bot.user.setPresence( {
+        bot.user.setPresence( {
             status: await Config.get( 'presence.status' ),
             afk: await Config.get( 'presence.afk' ),
             activity: {
@@ -19,7 +19,7 @@ class BotReady extends EventBase {
                 type: await Config.get( 'presence.activity.type' ),
                 url: await Config.get( 'presence.activity.url' )
             }
-        } ) )();
+        } );
     };
 };
 

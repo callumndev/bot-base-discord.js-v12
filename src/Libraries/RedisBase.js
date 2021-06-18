@@ -29,6 +29,14 @@ class RedisBase extends LibBase {
             ? Promise.all( key.map( async k => get( k ) ) ).then( values => values )
             : await get( key );
     };
+
+    async _getAll() {
+        return await redisClient?.hvals( this._options.hash );
+    };
+
+    async _delete( key ) {
+        return await redisClient?.hdel( this._options.hash, key );
+    };
 };
 
 

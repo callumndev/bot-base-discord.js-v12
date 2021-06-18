@@ -30,10 +30,10 @@ class EventManager extends LibBase {
         this._events.forEach( ( e ) => {
             if ( !data.isEvent( e.eventName ) ) return this.verbose( `Ignoring invalid event ${ e.eventName }` );
             
-            this.client.on( e.eventName, ( ...args ) => {
+            this.client.on( e.eventName, async ( ...args ) => {
                 if ( e.enabled == false ) return;
                 
-                e.classFn[ e.formattedName ].bind( e.classFn, ...args, this.client )();
+                await e.classFn[ e.formattedName ].bind( e.classFn, ...args, this.client )();
             } );
         } );
     };
@@ -58,12 +58,11 @@ class EventManager extends LibBase {
         };
 
         classes.funcs( classFn ).forEach( fn => {
-            let name = `${ classes.name( classFn ) }.${ fn }`,
-                eventName = lowerFirst( fn.replace( 'on', '' ) );
+            let name = `${ classes.name( classFn ) }.${ fn }`;
 
             this._events.set( name, {
                 name,
-                eventName,
+                eventName: lowerFirst( fn.replace( 'on', '' ) ),
                 formattedName: fn,
                 classFn: new classFn(),
                 enabled: true
