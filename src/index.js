@@ -1,12 +1,14 @@
 // Includers
 let includers = [
-    { name: 'util', folder: 'Utils', makeGlobal: true },
-    { name: 'helper', folder: 'Helpers', makeGlobal: true },
-    { name: 'dep', makeGlobal: true },
-    { name: 'lib', folder: 'Libraries' },
-    { name: 'data', folder: 'Data' },
-    { name: 'model', folder: 'Models' },
-    { name: 'structure', folder: 'Structures' },
+    { name: 'util',      folder: 'Utils',   makeGlobal: true },
+    { name: 'helper',    folder: 'Helpers', makeGlobal: true },
+    { name: 'dep',                          makeGlobal: true },
+    { name: 'lib',       folder: 'Libraries'                 },
+    { name: 'data',      folder: 'Data'                      },
+    { name: 'model',     folder: 'Models'                    },
+    { name: 'structure', folder: 'Structures'                },
+    { name: 'command',   folder: 'Commands'                  },
+    { name: 'event',     folder: 'Events'                    }
 ];
 
 includers.forEach( includer => {
@@ -43,6 +45,6 @@ try {
         global.bot = await new Bot().init();
     } )();
 } catch ( e ) {
-    logger.error( '[Bot Error] ' + e.message, '\n', e.stack );
-    logger.discord.error( '[Bot Error] ' + e.message, '\n', e.stack );
+    logger.error( `[Bot Error] ${ e.message }\n${ e.stack }` );
+    logger.discord.error( `[Bot Error] ${ e.message }\n${ e.stack }` );
 };

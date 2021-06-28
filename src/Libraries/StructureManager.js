@@ -9,17 +9,17 @@ class StructureManager extends LibBase {
         const structures = fs.readdirSync( path.join( __dirname, '..', 'Structures' ) );
 
         for ( let structureName of structures ) {
-            const structure = require( '../Structures/' + structureName );
+            const _structure = structure( structureName );
 
-            if ( classes.isClass( structure ) ) {
+            if ( classes.isClass( _structure ) ) {
                 try {
-                    this.register( classes.name( structure ), structure, !!structure.makeGlobal );
+                    this.register( classes.name( _structure ), _structure, !!_structure.makeGlobal );
                 } catch ( e ) {
                     this.error( `[init] Failed to register structure ${ structureName } because ${ e.message }\n`, e.stack );
                 };
-            } else if ( checkType( structure, 'function' ) ) {
+            } else if ( checkType( _structure, 'function' ) ) {
                 try {
-                    structure();
+                    _structure();
                     
                     this.log( `[init] Called structure ${ structureName }` );
                 } catch ( e ) {
@@ -42,7 +42,7 @@ class StructureManager extends LibBase {
         if ( !this.validate( name ) )
             throw new Error( `${ name } is not a registered structure` );
 
-        return this._structures?.get( name )?.enabled;
+        return this._structures?.get( name )?.enabled != false;
     };
 
     register( name, classFn, makeGlobal = false ) {

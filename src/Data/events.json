@@ -53,5 +53,16 @@
     "shardReady",
     "shardResume",
     "invalidated",
-    "raw"
+    "raw",
+
+    "command",
+    "commandUnknown",
+    "commandRun",
+    "commandFail",
+
+    "commandFailDisabled",
+    "commandFailBlacklisted",
+    "commandFailPermissions",
+    "commandFailBotPermissions",
+    "commandFailExecute"
 ]

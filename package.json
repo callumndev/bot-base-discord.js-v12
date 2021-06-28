@@ -8,6 +8,7 @@
     "license": "ISC",
     "dependencies": {
         "chalk": "^3.0.0",
+        "discord-command-parser": "^1.5.3",
         "discord.js": "^12.5.3",
         "fs": "^0.0.1-security",
         "ioredis": "^4.27.3",
