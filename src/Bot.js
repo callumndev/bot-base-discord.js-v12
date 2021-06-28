@@ -7,13 +7,13 @@ module.exports = class extends discord.Client {
     };
 
     async init() {
-        await Config.merge( require( './config.json' ) );
+        await Config.merge( _Config );
         
         try {
             this.login( await Config.get( 'client.token' ) );
         } catch ( e ) {
-            logger.error( '[Client :: Init :: Login] ' + e.message, '\n', e.stack );
-            logger.discord.error( '[Client :: Init :: Login] ' + e.message, '\n', e.stack );
+            logger.error( `[Client :: Init :: Login] ${ e.message }\n${ e.stack}` );
+            logger.discord.error( `[Client :: Init :: Login] ${ e.message }\n${ e.stack}` );
         };
         
         return this;

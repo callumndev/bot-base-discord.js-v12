@@ -1,9 +1,13 @@
 class PingCommand extends CommandBase {
     constructor() {
-        super( { name: 'ping' } )
+        super( {
+            name: 'ping',
+            level: 'mod',
+            botLevel: 'mod'
+        } );
     };
 
-    execute( message, args ) {
+    execute1( message ) {
         message.channel.send( 'Pong' )
     };
 };

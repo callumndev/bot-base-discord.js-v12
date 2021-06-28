@@ -10,7 +10,8 @@ class GuildMember extends discord.GuildMember {
             { level: 'dev', check: () => this.guild.id == _Config[ 'discord.guild' ] && this.roles.cache.has( _Config[ 'discord.roles.dev' ] ) },
             { level: 'owner', check: () => this.guild.owner.id == this.id },
             { level: 'admin', check: () => levels.includes( 'admin' ) },
-            { level: 'mod', check: () => levels.includes( 'mod' ) }
+            { level: 'mod', check: () => levels.includes( 'mod' ) },
+            { level: 'user', check: () => levels.includes( 'user' ) }
         ];
 
         for ( let i = 0; i < checks.length; i++ ) {
@@ -22,7 +23,9 @@ class GuildMember extends discord.GuildMember {
             };
         };
         
-        return levels.filter( ( item, index ) => levels.indexOf( item ) === index );
+        return levels
+            .filter( ( item, index ) => levels.indexOf( item ) === index )
+                .filter( i => i != null );
     };
 
     hasPermissionLevel( level ) {
@@ -43,7 +46,7 @@ class GuildMember extends discord.GuildMember {
     async isAdmin() {
         return new Promise( async resolve => resolve(
             this.hasPermissionLevel( 'admin' ) ||
-            this.isOwner() ||
+            await this.isOwner() ||
             this.isDev() && await this.guild.settings.get( 'devOverride' ) == true
         ) );
     };
@@ -51,8 +54,18 @@ class GuildMember extends discord.GuildMember {
     async isMod() {
         return new Promise( async resolve => resolve(
             this.hasPermissionLevel( 'mod' ) ||
-            this.isAdmin() ||
-            this.isOwner() ||
+            await this.isAdmin() ||
+            await this.isOwner() ||
+            this.isDev() && await this.guild.settings.get( 'devOverride' ) == true
+        ) );
+    };
+
+    async isUser() {
+        return new Promise( async resolve => resolve(
+            this.hasPermissionLevel( 'user' ) ||
+            await this.isMod() ||
+            await this.isAdmin() ||
+            await this.isOwner() ||
             this.isDev() && await this.guild.settings.get( 'devOverride' ) == true
         ) );
     };

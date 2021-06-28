@@ -1,4 +1,7 @@
 {
+    "user": [
+        "SEND_MESSAGES"
+    ],
     "mod": [
         "KICK_MEMBERS",
         "BAN_MEMBERS",

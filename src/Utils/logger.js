@@ -32,10 +32,10 @@ const chan = c => Config.get( [ 'discord.guild', `discord.channels.${ c }`, 'dis
     guild = bot.guilds.cache.get( guild );
     if ( !guild ) throw this.verbose( `Ignoring invalid discord.guild. Not found in client cache.` );
     
-    guild.channels.fetch( chan ).then( c => {
-        if ( !c ) throw this.verbose( `Ignoring invalid channel ${ c }. Not found in client cache.` );
-    } );
+    let c = guild.channels.cache.get( chan );
+    if ( !c ) throw this.verbose( `Ignoring invalid channel ${ c }. Not found in client cache.` );
 
+    
     return bot.channels.fetch( chan );
 } );
 
@@ -56,21 +56,21 @@ module.exports = {
             console.log( chalk.blue( '[Verbose]' ), chalk.grey( ...str ) );
     },
 
-    discord: {
-        log( ...str ) {
-            chan( 'log' ).then( c => {
-                let time = date.formatted,
-                    title = `Log - ${ time }`;
-                
-                c.embed( title, str.join( ' ' ), 'BLUE' );
-            } )
-            .catch( e => e );
-        },
-    
-        error( ...str ) {
-            chan( 'error' ).then( c => {
-                c.send( '``` ```' );
 
+    discord: new Proxy( {}, {
+        get( _, property ) {
+            if ( property == 'error' ) return ( ...str ) => this.error( ...str );
+            
+            return ( ...str ) => chan( property ).then( c => {
+                let time = date.formatted,
+                    title = `${ upperFirst( property ) } - ${ time }`;
+                    
+                c.embed( title, str.join( ' ' ), 'BLUE' );
+            } );
+        },
+
+        error: ( ...str ) => {
+            chan( 'error' ).then( c => {
                 let time = date.formatted,
                     title = `Error - ${ time }`,
                     error,
@@ -83,45 +83,37 @@ module.exports = {
                         let { name, message, stack } = arg;
 
                         error = {
-                            name, 
-                            message,
-                            stack: [ '\`\`\`', stack, '\`\`\`' ].join( '\n' )
+                            name,
+                            message: escape( message ),
+                            stack: codeBlock( stack )
                         };
 
                         summary = Object.entries( error )
                             .map( ( [ k, v ] ) => `Error ${ upperFirst( k ) }: ${ v }` )
-                            .join( '\n' );
+                                .join( '\n' );
 
                         attachment = new discord.MessageAttachment( Buffer.from( summary ), `${ title }.txt` );
 
-                        c.embed( title, summary, 'RED', { files: [ attachment ] } );
+                        c.embed( title, summary, 'RED', { files: [ attachment ], content: '@everyone' } );
                     } else {
                         args.push( arg );
                     };
                 } );
 
                 if ( args.length >= 1 ) {
-                    c.embed( title, args.join( ' ' ), 'RED' );
+                    c.embed( title, args.join( ' ' ), 'RED', { content: '@everyone' } );
                 };
-            } )
-            .catch( e => e );
-        },
-        
-        verbose( ...str ) {
-            chan( 'verbose' ).then( c => {
-                let time = date.formatted,
-                    title = `Log (Verbose) - ${ time }`;
-                
-                c.embed( title, str.join( ' ' ), 'GREY' );
-            } )
-            .catch( e => e );
+            } );
         }
-    }
+    } )
 };
 
 process.on( 'uncaughtException', ( err ) => {
     let log = module.exports;
 
     log.error( err.stack );
-    log.discord.error( err );
+
+    if ( typeof bot != 'undefined' ) {
+        log.discord.error( err );
+    };
 } );

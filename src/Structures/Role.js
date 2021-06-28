@@ -4,7 +4,7 @@ class Role extends discord.Role {
     };
     
     get permissionLevel() {
-        let level = 'user';
+        let level = null;
         let rolePermissions = this.permissions.toArray();
 
         for ( const [ key, value ] of Object.entries( Data( 'permissions' ) ) ) {

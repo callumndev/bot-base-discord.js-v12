@@ -12,10 +12,10 @@ class EventManager extends LibBase {
         const events = fs.readdirSync( path.join( __dirname, '..', 'Events' ) );
         
         for ( let eventName of events ) {
-            const event = require( '../Events/' + eventName );
+            const _event = event( eventName );
             
             try {
-                this.register( event );
+                this.register( _event );
             } catch ( e ) {
                 this.error( `[init] Failed to register event ${ eventName } because ${ e.message }`, '\n', e.stack );
             };
@@ -49,7 +49,7 @@ class EventManager extends LibBase {
         if ( !this.validate( name ) )
             throw new Error( `${ name } is not a registered event` );
 
-        return this._events.get( name )?.enabled;
+        return this._events.get( name )?.enabled != false;
     };
 
     register( classFn ) {
@@ -58,6 +58,8 @@ class EventManager extends LibBase {
         };
 
         classes.funcs( classFn ).forEach( fn => {
+            if ( !fn?.toLowerCase()?.startsWith( 'on' ) ) return;
+
             let name = `${ classes.name( classFn ) }.${ fn }`;
 
             this._events.set( name, {
