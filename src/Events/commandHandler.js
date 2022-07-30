@@ -58,7 +58,7 @@ class CommandHandler extends EventBase {
 
             try {
                 let parsed = await message.parsed(),
-                    args = parsed.args;
+                args = parsed.arguments;
                 
                 await command.execute( message, args );
             } catch ( e ) {
