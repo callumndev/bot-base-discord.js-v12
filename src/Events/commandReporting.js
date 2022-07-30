@@ -35,8 +35,8 @@ class CommandReporter extends EventBase {
         return arr
             .map( ( { prop, value } ) => `**${ prop }:** \`${ escape( value ) }\`` )
                 .join( ' **::** ' )
-                    .replace( true, 'Yes' )
-                        .replace( false, 'No' );
+                    .replaceAll( true, 'Yes' )
+                        .replaceAll( false, 'No' );
     };
     
     async send( message, reason ) {
